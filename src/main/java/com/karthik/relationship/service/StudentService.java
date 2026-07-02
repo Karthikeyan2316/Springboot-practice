@@ -91,9 +91,10 @@ public class StudentService {
     @Transactional
     public List<StudentClub> updateStudentClub(AddClubToStudentDto addClubToStudentDto) {
         Student student = studentRepository.findById(addClubToStudentDto.getStudentId()).orElseThrow(() -> new StudentNotFound("Student not found with id " + addClubToStudentDto.getStudentId()));
-        List<StudentClub>clubs=addClubToStudentDto.getClubIds().stream()
-                .map(i->studentClubRepository.findById((long)i).orElseThrow(()->new StudentNotFound("Club not found with id " + i)))
-                .collect(Collectors.toList());
+//        List<StudentClub>clubs=addClubToStudentDto.getClubIds().stream()
+//                .map(i->studentClubRepository.findById((long)i).orElseThrow(()->new StudentNotFound("Club not found with id " + i)))
+//                .collect(Collectors.toList());
+        List<StudentClub>clubs=studentClubRepository.findStudentClubByClubIdIsIn(addClubToStudentDto.getClubIds());
         student.setStudentClubs(clubs);
         studentRepository.save(student);
         return clubs;
